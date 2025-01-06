@@ -39,7 +39,7 @@
             <tr>
                 <td>
                 @if($member->profile_picture != null) 
-                    <img src="{{ $member->profile_picture }}" class="img-thumbnail" height="60px" width="60px"/>
+                    <img src="{{ Storage::url($member->profile_picture) }}" class="img-thumbnail" height="60px" width="60px"/>
                 @else 
                     <img src="{{ asset('images/profile_default.jpg') }}" class="img-thumbnail" height="60px" width="60px"/>
                 @endif

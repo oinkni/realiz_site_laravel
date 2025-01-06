@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
@@ -44,7 +46,7 @@ class MemberController extends Controller
             'linkedin_profile' => 'url',
             'profile_picture_raw' => 'image',
         ]);
-        $this -> saveProfilePicture($request);
+        $this->saveProfilePicture($request);
 
         Member::create($request->all());
         return redirect()->route('members.index')->with('success', 'Member added successfully!');
@@ -65,9 +67,11 @@ class MemberController extends Controller
             'profession' => 'required',
             'linkedin_profile' => 'url'
         ]);
-        $this -> saveProfilePicture($request);
-
+        $hasUploadedPicture = $this->saveProfilePicture($request);
         $member = Member::findOrFail($id);
+        if ($member->profile_picture != null && $hasUploadedPicture) {
+            $this->deletePicture($member->profile_picture);
+        }
         $member->update($request->all());
         return redirect()->route('members.index')->with('success', 'Member updated successfully!');
     }
@@ -75,17 +79,30 @@ class MemberController extends Controller
     public function destroy($id)
     {
         $member = Member::findOrFail($id);
-        Storage::disk('public')->delete($member->profile_picture);
+        if ($member->profile_picture != null) {
+            $this->deletePicture($member->profile_picture);
+        }
         $member->delete();
         return redirect()->route('members.index')->with('success', 'Member deleted successfully!');
     }
 
-    public function saveProfilePicture($request) {
-        if($request->hasFile('profile_picture_raw')) {
+    private function saveProfilePicture($request)
+    {
+        if ($request->hasFile('profile_picture_raw')) {
             $file = $request->profile_picture_raw;
             $filename = time() . '_' . $file->getClientOriginalName();
             $path = $file->storeAs('profiles', $filename, 'public');
-            $request->merge(['profile_picture'=> Storage::url($path)]);
-        } 
+            $request->merge(['profile_picture' => $path]);
+            return true;
+        }
+        return false;
+    }
+
+    private function deletePicture($profile_picture)
+    {
+        Log::debug("trying to delete " . $profile_picture);
+        if (Storage::disk('public')->exists($profile_picture)) {
+            Storage::disk('public')->delete($profile_picture);
+        }
     }
 }
