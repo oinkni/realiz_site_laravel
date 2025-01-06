@@ -23,7 +23,7 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <img class="logo-formated" src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Women in FinTech') }}">                     
+                    <img class="logo-formated" src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Women in FinTech') }}">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -84,6 +84,16 @@
     </header>
 
     <main role="main" class="container">
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         @yield('content')
     </main>
 

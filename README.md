@@ -20,6 +20,7 @@ composer require laravel/ui
 php artisan ui bootstrap
 php artisan ui bootstrap --auth
 
+you must install npm
 https://huemint.com/bootstrap-basic/
 // THEME generated with https://huemint.com/bootstrap-basic/
 npm install && npm run dev
@@ -31,5 +32,6 @@ npm run build
 >> php artisan config:cache
 >> php artisan optimize
 
+php artisan storage:link
 
 

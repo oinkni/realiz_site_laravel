@@ -2,8 +2,7 @@
 @section('content')
 <div class="container">
     <h1>Add Member</h1>
-    <form action="{{ route('members.store') }}" method="POST">
-        @csrf
+    <form action="{{ route('members.store') }}" method="POST" enctype="multipart/form-data">
         @include('members.form')
     </form>
 </div>

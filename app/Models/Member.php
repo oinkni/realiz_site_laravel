@@ -8,7 +8,7 @@ class Member extends Model
 {
     protected $fillable = [
         'first_name', 'last_name', 'email', 'profession', 'company', 'expertise',
-        'linkedin_url', 'status', 'profile_picture'
+        'linkedin_profile', 'status', 'profile_picture'
     ];
        
 }

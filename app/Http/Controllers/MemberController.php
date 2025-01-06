@@ -17,10 +17,15 @@ class MemberController extends Controller
         if ($request->filled('company')) {
             $query->where('company', 'like', '%' . $request->company . '%');
         }
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+
+        if ($request->filled('order_by_field') && $request->orderByField == 'name') {
+            $query->orderBy('last_name', 'desc');
+            $query->orderBy('first_name', 'desc');
+        } else {
+            $query->orderBy('created_at', 'desc');
         }
-        $members = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        $members = $query->paginate(10);
         return view('members.index', compact('members'));
     }
 
@@ -36,8 +41,10 @@ class MemberController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:members',
             'profession' => 'required',
-            'linkedin_url' => 'url'
+            'linkedin_profile' => 'url',
+            'profile_picture_raw' => 'image',
         ]);
+        $this -> saveProfilePicture($request);
 
         Member::create($request->all());
         return redirect()->route('members.index')->with('success', 'Member added successfully!');
@@ -56,8 +63,10 @@ class MemberController extends Controller
             'last_name' => 'required',
             'email' => 'required|email|unique:members,email,' . $id,
             'profession' => 'required',
-            'linkedin_url' => 'url'
+            'linkedin_profile' => 'url'
         ]);
+        $this -> saveProfilePicture($request);
+
         $member = Member::findOrFail($id);
         $member->update($request->all());
         return redirect()->route('members.index')->with('success', 'Member updated successfully!');
@@ -66,15 +75,17 @@ class MemberController extends Controller
     public function destroy($id)
     {
         $member = Member::findOrFail($id);
+        Storage::disk('public')->delete($member->profile_picture);
         $member->delete();
         return redirect()->route('members.index')->with('success', 'Member deleted successfully!');
     }
 
-    public function toggleStatus($id)
-    {
-        $member = Member::findOrFail($id);
-        $member->status = $member->status === 'pending' ? 'completed' : 'pending';
-        $member->save();
-        return redirect()->route('members.index')->with('success', 'Member status updated!');
+    public function saveProfilePicture($request) {
+        if($request->hasFile('profile_picture_raw')) {
+            $file = $request->profile_picture_raw;
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('profiles', $filename, 'public');
+            $request->merge(['profile_picture'=> Storage::url($path)]);
+        } 
     }
 }

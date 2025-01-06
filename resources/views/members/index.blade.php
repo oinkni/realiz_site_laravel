@@ -24,6 +24,7 @@
     <table>
         <thead>
             <tr>
+                <th>Profile</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
@@ -36,6 +37,14 @@
         <tbody>
             @foreach ($members as $member)
             <tr>
+                <td>
+                @if($member->profile_picture != null) 
+                    <img src="{{ $member->profile_picture }}" class="img-thumbnail" height="60px" width="60px"/>
+                @else 
+                    <img src="{{ asset('images/profile_default.jpg') }}" class="img-thumbnail" height="60px" width="60px"/>
+                @endif
+
+                </td>
                 <td>{{ $member->first_name }}</td>
                 <td>{{ $member->last_name }}</td>
                 <td>{{ $member->email }}</td>
