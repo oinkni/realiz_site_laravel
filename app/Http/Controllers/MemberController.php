@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
+use App\Models\MembersFilter;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -13,6 +14,7 @@ class MemberController extends Controller
     public function index(Request $request)
     {
         $query = Member::query();
+
         if ($request->filled('profession')) {
             $query->where('profession', 'like', '%' . $request->profession . '%');
         }
@@ -20,15 +22,17 @@ class MemberController extends Controller
             $query->where('company', 'like', '%' . $request->company . '%');
         }
 
-        if ($request->filled('order_by_field') && $request->orderByField == 'name') {
-            $query->orderBy('last_name', 'desc');
-            $query->orderBy('first_name', 'desc');
+        $sort_by = $request->filled('sort_by') ? $request->sort_by : 'created_at';
+        if ($sort_by == 'name') {
+            $query->orderBy('last_name', 'asc');
+            $query->orderBy('first_name', 'asc');
         } else {
             $query->orderBy('created_at', 'desc');
         }
+        $filter = new MembersFilter($request->profession, $request->company, $sort_by);
 
         $members = $query->paginate(10);
-        return view('members.index', compact('members'));
+        return view('members.index', compact('members', 'filter'));
     }
 
     public function create()

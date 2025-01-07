@@ -36,6 +36,9 @@
                             <a class="nav-link" href="{{ route('members.index') }}">Members</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('members.create') }}">Add Member</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                     </ul>
@@ -91,6 +94,12 @@
                 <li>{{ $error }}</li>
                 @endforeach
             </ul>
+        </div>
+        @endif
+
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
         </div>
         @endif
 

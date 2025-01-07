@@ -1,68 +1,59 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <h1>Members List</h1>
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
+    <h1>Members Directory</h1>
 
-    <form method="GET" action="{{ route('members.index') }}">
-        <input type="text" name="profession" placeholder="Profession">
-        <input type="text" name="company" placeholder="Company">
-        <select name="status">
-            <option value="">-- Select Status --</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-        </select>
-        <button type="submit">Filter</button>
+
+    <form method="GET" action="{{ route('members.index') }}" class="d-flex flex-column flex-md-row gap-2 mb-4 align-middle">
+        <div class="form-group">
+            <input type="text" value="{{ $filter->profession }}"
+                name="profession" class="form-control form-control-sm" placeholder="Profession">
+        </div>
+        <div class="form-group">
+            <input type="text" value="{{ $filter->company }}"
+                name="company" class="form-control form-control-sm" placeholder="Company">
+        </div>
+
+        <div class="form-group">
+            <select name="sort_by" class="form-control form-control-sm">
+                <option value="created_at" {{ $filter->sort_by == 'created_at' ? 'selected' : '' }}>Newest</option>
+                <option value="name" {{ $filter->sort_by == 'name' ? 'selected' : '' }}>Full Name</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-sm btn-secondary">Filter</button>
     </form>
 
-    <a href="{{ route('members.create') }}" class="btn btn-primary mb-3">Add New Member</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Profile</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Profession</th>
-                <th>Company</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($members as $member)
-            <tr>
-                <td>
-                @if($member->profile_picture != null) 
-                    <img src="{{ Storage::url($member->profile_picture) }}" class="img-thumbnail" height="60px" width="60px"/>
-                @else 
-                    <img src="{{ asset('images/profile_default.jpg') }}" class="img-thumbnail" height="60px" width="60px"/>
+    <div class="d-flex flex-column flex-md-row flex-wrap">
+        @foreach ($members as $member)
+        <div class="col-12 col-md-3 pb-4 pe-3">
+            <div class="card">
+                @if($member->profile_picture != null)
+                <img src="{{ Storage::url($member->profile_picture) }}" class="card-img-top" />
+                @else
+                <img src="{{ asset('images/profile_default.jpg') }}" class="card-img-top" />
                 @endif
 
-                </td>
-                <td>{{ $member->first_name }}</td>
-                <td>{{ $member->last_name }}</td>
-                <td>{{ $member->email }}</td>
-                <td>{{ $member->profession }}</td>
-                <td>{{ $member->company }}</td>
-                <td>{{ $member->status }}</td>
-                <td>
-                    <a href="{{ route('members.edit', $member->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ $member->first_name . ' ' .  $member->last_name}}</h5>
+
+                    <p class="card-text">
+                        <strong>Profession:</strong> {{ $member->profession }} <br />
+                        <strong>Company:</strong> {{ $member->company }}
+                    </p>
+
+                    <a href="{{ route('members.edit', $member->id) }}" class="btn btn-success btn-sm">Edit</a>
                     <form action="{{ route('members.destroy', $member->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Areyou sure?')">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                     </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
     {{ $members->links() }}
 </div>
 @endsection

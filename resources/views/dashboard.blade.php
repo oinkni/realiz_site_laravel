@@ -1,47 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-
-<!-- 
-$totalMembersQuery = "SELECT COUNT(*) as total FROM members";
-$totalMembersStmt = $db->prepare($totalMembersQuery);
-$totalMembersStmt->execute();
-$totalMembers = $totalMembersStmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-
-$professionDistributionQuery = "SELECT profession, COUNT(*) as count FROM members GROUP BY profession";
-$professionDistributionStmt = $db->prepare($professionDistributionQuery);
-$professionDistributionStmt->execute();
-$professionDistribution = $professionDistributionStmt->fetchAll(PDO::FETCH_ASSOC);
-?>-->
-<!-- 
 <h2>Dashboard</h2>
 <div>
-    <h3>Total Members: <?php echo $totalMembers; ?></h3>
+    <h3>Total Members: {{ $totalMembers }}</h3>
     <h3>Profession Distribution:</h3>
     <ul>
         <?php foreach ($professionDistribution as $profession): ?>
-            <li><?php echo htmlspecialchars($profession['profession']); ?>: <?php echo $profession['count']; ?></li>
+            <li class="d-flex flex-column flex-sm-row gap-2 mb-4 align-middle justify-content-sm-left">
+                <span>{{ $profession->profession }} : {{ $profession->total }}</span>
+                <a class="btn btn-primary btn-sm" href="{{ route('members.index', ['profession' => $profession->profession]) }}">See all</a>
+            </li>
         <?php endforeach; ?>
     </ul>
-</div> -->
+</div>
+@endsection
