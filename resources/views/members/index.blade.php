@@ -54,6 +54,8 @@
         @endforeach
     </div>
 
-    {{ $members->links() }}
+    <div class="mb-4">
+        {{ $members->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 @endsection
