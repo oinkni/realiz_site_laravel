@@ -20,7 +20,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <nav class="navbar navbar-expand-lg">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img class="logo-formated" src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Women in FinTech') }}">
@@ -106,9 +106,9 @@
         @yield('content')
     </main>
 
-    <footer class="footer bg-dark text-light">
+    <footer class="footer mt-auto py-3">
         <div class="container text-center">
-            © 2024 Women in FinTech
+            <span class="text-muted">© 2024 Women in FinTech</span>
         </div>
     </footer>
 </body>

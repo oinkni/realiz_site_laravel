@@ -27,15 +27,16 @@
 </div>
 <div class="form-group">
     <label for="expertise">Expertise</label>
-    <input type="text" name="expertise" id="expertise" class="form-control"
-        value="{{ old('expertise', $member->expertise ??'') }}">
+    <textarea type="text" name="expertise" id="expertise" class="form-control">
+        {{ old('expertise', $member->expertise ??'') }}
+    </textarea>
 </div>
 <div class="form-group">
     <label for="linkedin_profile">LinkedIn</label>
     <input type="text" name="linkedin_profile" id="linkedin_profile" class="form-control"
         value="{{ old('linkedin_profile', $member->linkedin_profile ??'') }}">
 </div>
-<div class="mb-3">
+<div class="form-group mb-3">
     <label for="profile_picture_raw">Profile picture</label>
     <input type="file" name="profile_picture_raw" id="profile_picture_raw" class="form-control" aria-label="profile picture">
 </div>

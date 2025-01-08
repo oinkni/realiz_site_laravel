@@ -81,5 +81,3 @@ php artisan optimize
 composer require laravel/ui
 php artisan ui bootstrap --auth
 ```
-
--- Tema si culorile au fost generate cu: [Huemint](https://huemint.com/bootstrap-basic/)

@@ -7,31 +7,33 @@
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    line-height: 60px;
-}
-
-html {
-    height: 100%;
-}
-
 body {
-    padding-top: 80px;
-    padding-bottom:75px;
-    min-height: 100%;
-    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.navbar-brand img {
-    height: 50px;
-    margin-right: 10px;
+.footer {
+    margin-top: auto;
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand img {
+    width: 50px;
+    margin-right: 10px;
+    height: auto;
+    min-height: 10px; 
+}
+
+html[data-bs-theme='dark'] .navbar, html[data-bs-theme='dark'] .footer {
+    background-color: #123524;
+}
+
+
+html[data-bs-theme='light'] .navbar, html[data-bs-theme='light'] .footer {
+    background-color: #A9C46C;
 }

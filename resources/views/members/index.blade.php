@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-    <h1>Members Directory</h1>
+    <h2>Members Directory</h2>
 
 
     <form method="GET" action="{{ route('members.index') }}" class="d-flex flex-column flex-md-row gap-2 mb-4 align-middle">
@@ -24,6 +24,11 @@
     </form>
 
 
+    @if ($members->isEmpty())
+    <div class="alert alert-info" role="alert">
+        No members found.
+    </div>
+    @endif
     <div class="d-flex flex-column flex-md-row flex-wrap">
         @foreach ($members as $member)
         <div class="col-12 col-md-3 pb-4 pe-3">

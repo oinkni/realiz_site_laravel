@@ -4,6 +4,11 @@
 <h2>Dashboard</h2>
 <div>
     <h3>Total Members: {{ $totalMembers }}</h3>
+    @if($totalMembers == 0)
+    <div class="alert alert-info" role="alert">
+        No members found.
+    </div>
+    @else
     <h3>Profession Distribution:</h3>
     <ul>
         <?php foreach ($professionDistribution as $profession): ?>
@@ -13,5 +18,6 @@
             </li>
         <?php endforeach; ?>
     </ul>
+    @endif
 </div>
 @endsection
