@@ -24,6 +24,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <img class="logo-formated" src="{{ asset('images/logo.png') }}" alt="{{ config('app.name', 'Women in FinTech') }}">
+                    Women in FinTech
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -86,7 +87,7 @@
         </nav>
     </header>
 
-    <main role="main" class="container">
+    <main role="main" class="container  mt-4 mb-4">
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
